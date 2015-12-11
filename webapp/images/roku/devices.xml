@@ -1,0 +1,121 @@
+<devices version="1.10">
+<!--
+
+Roku Devices by Serial Number for Mobile Discovery
+
+History:
+  2014-May-00 : v1.00 : created for v3.1
+  2014-Aug-11 : v1.01 : add TCL and Hisense RokuTVs
+  2014-Aug-19 : v1.02 : update RokuTVs prefix
+  2014-Dec-17 : v1.03 : add 4200X model
+  2015-Jan-22 : v1.04 : add Mustang 1 (Tyler) and Mustang 2 (Austin)
+  2015-Feb-17 : v1.04 : add new TCL, Sharp and Insignia RokuTVs
+  2015-Feb-17 : v1.04 : add new Mustang and Austin models
+  2015-Feb-27 : v1.04 : add Sky Italia and Deutse models
+  2015-Mar-02 : v1.04 : add TCL 2015 models
+  2015-Mar-03 : v1.05 : add Mustang 1 (Tyler) and Mustang 2 (Austin)
+  2015-Mar-03 : v1.06 : add TPV models
+  2015-Jun-25 : v1.07 : add Haier models
+  2015-Aug-25 : v1.08 : add Roku Device (YY)
+  2015-Sep-01 : v1.09 : add Roku Devices (5Y,61,62,63)
+  2015-Sep-21 : v1.10 : add Roku Devices (5F,5G)
+  2015-Sep-22 : v1.10 : add wake flag
+ 
+ -->
+
+<!-- Roku Setop Boxes -->
+<device prefix="20"  model="N1000"  name="Roku Device"            image="player_redwood"         tv="false" por="false" por_video="false" />
+<device prefix="C0"  model="N1100"  name="Roku HD"                image="player_redwood"         tv="false" por="false" por_video="false" />
+<device prefix="D0"  model="N1101"  name="Roku HD-XR"             image="player_redwood"         tv="false" por="false" por_video="false" />
+<device prefix="G0"  model="N1050"  name="Roku SD"                image="player_redwood"         tv="false" por="false" por_video="false" />
+<device prefix="H0"  model="2000X"  name="Roku HD"                image="player_pico_xds"        tv="false" por="false" por_video="false" />
+<device prefix="J0"  model="2050X"  name="Roku XD"                image="player_pico_xd"         tv="false" por="false" por_video="false" />
+<device prefix="K0"  model="2100X"  name="Roku XDS"               image="player_pico_xds"        tv="false" por="false" por_video="false" />
+<device prefix="N0"  model="NTV250" name="Netgear NTV250 Device"  image="player_pico_xd"         tv="false" por="false" por_video="false" />
+<device prefix="11"  model="3000X"  name="Roku 2 HD"              image="player_giga_2_hd"       tv="false" por="true"  por_video="true" />
+<device prefix="12"  model="3050X"  name="Roku 2 XD"              image="player_giga_2_xd"       tv="false" por="true"  por_video="true" />
+<device prefix="13D" model="3100AB" name="Roku 2 XS"              image="player_giga_2_xs_angry" tv="false" por="true"  por_video="true" />
+<device prefix="13"  model="3100X"  name="Roku 2 XS"              image="player_giga_2_xs"       tv="false" por="true"  por_video="true" />
+<device prefix="16"  model="2400X"  name="Roku LT"                image="player_giga_lt"         tv="false" por="true"  por_video="true" />
+<device prefix="17"  model="2600X"  name="Roku XD"                image="player_giga_2_xd"       tv="false" por="true"  por_video="false" />
+<device prefix="18"  model="2500X"  name="Roku HD"                image="player_paolo_hd"        tv="false" por="true"  por_video="false" />
+<device prefix="19"  model="2450X"  name="Roku LT"                image="player_paolo_lt"        tv="false" por="true"  por_video="false" />
+<device prefix="1C"  model="3100EU" name="Roku 2 XS"              image="player_giga_2_xs"       tv="false" por="true"  por_video="true" />
+<device prefix="1D"  model="2400EU" name="Roku LT"                image="player_paolo_lt"        tv="false" por="true"  por_video="true" />
+<device prefix="1E"  model="3400X"  name="Roku Streaming Stick"   image="player_jackson_purple"  tv="false" por="true"  por_video="true" />
+<device prefix="1H"  model="3420X"  name="Roku Streaming Stick"   image="player_jackson_black"   tv="false" por="true"  por_video="true" />
+<device prefix="1G"  model="4200X"  name="Roku 3"                 image="player_austin_3"        tv="false" por="true"  por_video="true" />
+<device prefix="1W"  model="4200X"  name="Roku 3"                 image="player_austin_3"        tv="false" por="true"  por_video="true" />
+<device prefix="41"  model="4200X"  name="Roku 3"                 image="player_austin_3"        tv="false" por="true"  por_video="true" />
+<device prefix="42"  model="4200X"  name="Roku 3"                 image="player_austin_3"        tv="false" por="true"  por_video="true" />
+<device prefix="1J"  model="3050EU" name="Roku 2 XD"              image="player_giga_2_xd"       tv="false" por="true"  por_video="true" />
+<device prefix="1M"  model="2400SK" name="NowTV Box"              image="now-tv"         tv="false" por="true"  por_video="true" />
+<device prefix="1P"  model="2700X"  name="Roku LT"                image="player_tyler_lt"        tv="false" por="true"  por_video="true" />
+<device prefix="2K"  model="2700X"  name="Roku LT"                image="player_tyler_lt"        tv="false" por="true"  por_video="true" />
+<device prefix="1X"  model="2710X"  name="Roku 1"                 image="player_tyler_1"         tv="false" por="true"  por_video="true" />
+<device prefix="1S"  model="2710X"  name="Roku 1"                 image="player_tyler_1"         tv="false" por="true"  por_video="true" />
+<device prefix="1R"  model="2720X"  name="Roku 2"                 image="player_tyler_2"         tv="false" por="true"  por_video="true" />
+<device prefix="1T"  model="2720X"  name="Roku 2"                 image="player_tyler_2"         tv="false" por="true"  por_video="true" />
+<device prefix="2L"  model="3500X"  name="Roku Streaming Stick"   image="player_sugarland"       tv="false" por="true"  por_video="true" />
+<device prefix="2M"  model="3500X"  name="Roku Streaming Stick"   image="player_sugarland"       tv="false" por="true"  por_video="true" />
+<device prefix="32"  model="4200SK" name="Roku 3"                 image="player_unknown"         tv="false" por="true"  por_video="true" />
+<device prefix="4A"  model="4210X"  name="Roku 2"                 image="player_mustang_1"       tv="false" por="true"  por_video="true" />
+<device prefix="4E"  model="4230X"  name="Roku 3"                 image="player_mustang_2"       tv="false" por="true"  por_video="true" />
+<device prefix="5H"  model="4205EU" name="Roku 2"                 image="player_mustang_1"       tv="false" por="true"  por_video="true" />
+
+<device prefix="61"  model="4205X"  name="Roku 2"                 image="player_mustang_1"       tv="false" por="true"  por_video="true" />
+<device prefix="62"  model="4200X"  name="Roku 3"                 image="player_mustang_2"       tv="false" por="true"  por_video="true" />
+<device prefix="63"  model="4230X"  name="Roku 3"                 image="player_mustang_2"       tv="false" por="true"  por_video="true" />
+<device prefix="5Y"  model="4210X"  name="Roku 2"                 image="player_mustang_1"       tv="false" por="true"  por_video="true" />
+<device prefix="5F"  model="4210X"  name="Roku 2"                 image="player_mustang_1"       tv="false" por="true"  por_video="true" />
+<device prefix="5G"  model="4230X"  name="Roku 3"                 image="player_mustang_2"       tv="false" por="true"  por_video="true" />
+
+<device prefix="YY"  model="4400X"  name="Roku 4"                 image="player_dallas_4"        tv="false" por="true"  por_video="true" screensaver="true" find_remote="true" wake="true"/>
+
+<!-- Roku TVs -->
+<device prefix="2N"  model=""       name="Roku TV" mft_name=""              mft="Roku"      mft_model="TV"              image="player_rokutv"          tv="true"  por="true"  por_video="true" />
+
+<device prefix="2N"  model="5101X"  name="Roku TV" mft_name='32" 1920*1080' mft="TCL"       mft_model="32S4610R"        image="player_rokutv_tcl"      tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5103X"  name="Roku TV" mft_name='40" 1920*1080' mft="TCL"       mft_model="40FS4610R"       image="player_rokutv_tcl"      tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5104X"  name="Roku TV" mft_name='48" 1920*1080' mft="TCL"       mft_model="48FS4610R"       image="player_rokutv_tcl"      tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5105X"  name="Roku TV" mft_name='55" 1920*1080' mft="TCL"       mft_model="55FS4610R"       image="player_rokutv_tcl"      tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5106X"  name="Roku TV" mft_name='32" 1920*1080' mft="TCL"       mft_model="32S3700"         image="player_rokutv_tcl"      tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5107X"  name="Roku TV" mft_name='32" 1920*1080' mft="TCL"       mft_model="32S3800"         image="player_rokutv_tcl"      tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5108X"  name="Roku TV" mft_name='32" 1920*1080' mft="TCL"       mft_model="32S3850"         image="player_rokutv_tcl"      tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5109X"  name="Roku TV" mft_name='40" 1920*1080' mft="TCL"       mft_model="40FS3700"        image="player_rokutv_tcl"      tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5110X"  name="Roku TV" mft_name='40" 1920*1080' mft="TCL"       mft_model="40FS3800"        image="player_rokutv_tcl"      tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5111X"  name="Roku TV" mft_name='40" 1920*1080' mft="TCL"       mft_model="40FS3850"        image="player_rokutv_tcl"      tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5112X"  name="Roku TV" mft_name='48" 1920*1080' mft="TCL"       mft_model="48FS3700"        image="player_rokutv_tcl"      tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5113X"  name="Roku TV" mft_name='50" 1920*1080' mft="TCL"       mft_model="50FS3800"        image="player_rokutv_tcl"      tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5114X"  name="Roku TV" mft_name='50" 1920*1080' mft="TCL"       mft_model="50FS3850"        image="player_rokutv_tcl"      tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5115X"  name="Roku TV" mft_name='55" 1920*1080' mft="TCL"       mft_model="55FS3700"        image="player_rokutv_tcl"      tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5116X"  name="Roku TV" mft_name='55" 1920*1080' mft="TCL"       mft_model="55FS3800"        image="player_rokutv_tcl"      tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5117X"  name="Roku TV" mft_name='55" 1920*1080' mft="TCL"       mft_model="55FS3850"        image="player_rokutv_tcl"      tv="true"  por="true"  por_video="true" />
+
+<device prefix="2N"  model="5119X"  name="Roku TV" mft_name='28" 1280*720'  mft="TCL"       mft_model="28S3750"         image="player_rokutv_tcl"      tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5120X"  name="Roku TV" mft_name='32" 1280*720'  mft="TCL"       mft_model="32S3750"         image="player_rokutv_tcl"      tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5121X"  name="Roku TV" mft_name='40" 1920*1080' mft="TCL"       mft_model="40FS3750"        image="player_rokutv_tcl"      tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5122X"  name="Roku TV" mft_name='48" 1920*1080' mft="TCL"       mft_model="48FS3750"        image="player_rokutv_tcl"      tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5123X"  name="Roku TV" mft_name='55" 1920*1080' mft="TCL"       mft_model="55FS3750"        image="player_rokutv_tcl"      tv="true"  por="true"  por_video="true" />
+
+<device prefix="2N"  model="5203X"  name="Roku TV" mft_name='40" 1920*1080' mft="Hisense"   mft_model="40H4"            image="player_rokutv_hisense"  tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5204X"  name="Roku TV" mft_name='48" 1920*1080' mft="Hisense"   mft_model="48H4"            image="player_rokutv_hisense"  tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5206X"  name="Roku TV" mft_name='50" 1920*1080' mft="Hisense"   mft_model="50H5G"           image="player_rokutv_hisense"  tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5207X"  name="Roku TV" mft_name='55" 1920*1080' mft="Hisense"   mft_model="55H4G"           image="player_rokutv_hisense"  tv="true"  por="true"  por_video="true" />
+
+<device prefix="2N"  model="5303X"  name="Roku TV" mft_name='43" 1920*1080' mft="Sharp"     mft_model="LC-43LB371X"     image="player_rokutv_sharp"    tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5304X"  name="Roku TV" mft_name='50" 1920*1080' mft="Sharp"     mft_model="LC-50LB371X"     image="player_rokutv_sharp"    tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5303X"  name="Roku TV" mft_name='43" 1920*1080' mft="Sharp"     mft_model="LC-43LB371C"     image="player_rokutv_sharp"    tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5304X"  name="Roku TV" mft_name='50" 1920*1080' mft="Sharp"     mft_model="LC-50LB371C"     image="player_rokutv_sharp"    tv="true"  por="true"  por_video="true" />
+
+<device prefix="2N"  model="5302X"  name="Roku TV" mft_name='32" 1920*1080' mft="Insignia"  mft_model="NS-32DR420XX16"  image="player_rokutv_insignia" tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5305X"  name="Roku TV" mft_name='55" 1920*1080' mft="Insignia"  mft_model="NS-55DR420XX16"  image="player_rokutv_insignia" tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5302X"  name="Roku TV" mft_name='32" 1920*1080' mft="Insignia"  mft_model="NS-32DR420CA16"  image="player_rokutv_insignia" tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5305X"  name="Roku TV" mft_name='55" 1920*1080' mft="Insignia"  mft_model="NS-55DR420CA16"  image="player_rokutv_insignia" tv="true"  por="true"  por_video="true" />
+
+<device prefix="2N"  model="5306X"  name="Roku TV" mft_name='32" 1280*720'  mft="Haier"     mft_model="32E4000R"  image="player_rokutv_haier" tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5308X"  name="Roku TV" mft_name='43" 1920*1080' mft="Haier"     mft_model="43E4500R"  image="player_rokutv_haier" tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5309X"  name="Roku TV" mft_name='49" 1920*1080' mft="Haier"     mft_model="49E4500R"  image="player_rokutv_haier" tv="true"  por="true"  por_video="true" />
+<device prefix="2N"  model="5311X"  name="Roku TV" mft_name='55" 1920*1080' mft="Haier"     mft_model="55E4500R"  image="player_rokutv_haier" tv="true"  por="true"  por_video="true" />
+
+</devices>
