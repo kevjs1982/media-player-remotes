@@ -1,13 +1,20 @@
+<!DOCTYPE html>
 <html>
 	<head>
 	<title>SSDP Multicast</title>
 	<script src="ssdp.js"></script>
+	<script src="jquery-1.11.3.js"></script>
+	<style>
+		.rokuimg
+		{
+			width:64px;
+			height:64px;
+			float:left;
+		}
+	</style>
 	</head>
 	<body>
-		<!-- SSDP Start button -->
-		<input type="button" id="start" value="SSDP Start" />
-		<p>
-		<!-- Output for Debug -->
-		<div id="output" style="font-family: Arial; font-size: 12"/>
+		<h1>Discovered Devices</h1>
+		<div id="output" style="font-family: Arial; font-size: 12;overflow:auto;max-height:400px"></div>
 	</body>
 </html>
