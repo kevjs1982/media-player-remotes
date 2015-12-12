@@ -65,7 +65,7 @@ window.addEventListener("load", function()
 		
 
 		$('#remote_control').on('click','area',function(e){	
-		console.log($(this).data('action'))
+		//console.log($(this).data('action'))
 			e.preventDefault();
 			$.ajax({
 			type:'POST',
@@ -84,8 +84,9 @@ window.addEventListener("load", function()
 			})
 		});
 
-		$('body').on('click','.device_name',function(){	
-		
+		$('ul').on('click','li',function(){	
+			
+			$('#selected_device').html(" :: " + ssdpDevices[$(this).data('usn').trim()]['friendlyName'] );
 			switch($(this).data('type'))
 			{
 				case 'urn:dial-multiscreen-org:device:dial:1':
@@ -100,8 +101,8 @@ window.addEventListener("load", function()
 					$('#netgem-remote').hide();
 					$('#roku_remote').show();
 					var idx = $(this).data('usn');
-					console.log(idx);
-					console.log($("body").find("[data-apps='" + idx + "']").html());
+					//console.log(idx);
+					//console.log($("body").find("[data-apps='" + idx + "']").html());
 					$('.roku_apps').html($("body").find("[data-apps='" + idx + "']").html());
 					break;
 			}		
@@ -309,7 +310,7 @@ function loadEETV(usn)
 		//var ee_clock = new Date(data.system.time)
 		//$( "#time" ).html(ee_clock.format('dd-mmm-yyyy HH:MM:ss'));
 		//$( "#"+usn.replace(/\:/,"_")+"_disk" ).progressbar({value:data.pvr.status.disk.percent});
-		$( "#"+usn.replace(/\:/g,"_")+"_tuners" ).html(data.system.tuners + " tuners");
+		$( "#"+usn.replace(/\:/g,"_")+"_tuners" ).html(data.system.tuners + " tuners.&nbsp;&nbsp;");
 		var used = data.pvr.status.disk.usedSpace / 1024 / 1024
 		var total = data.pvr.status.disk.totalSpace / 1024 / 1024
 		$( "#"+usn.replace(/\:/g,"_")+"_usage" ).html("<i>" + $.number(used,2) + " of " + $.number(total,2) + " GiB used</i>");
@@ -361,25 +362,24 @@ function redrawSSDPList(usn)
 		var span = "";
 		if ( ssdpDevices[idx]['ST'] == 'urn:netgem:device:Netbox:1')
 		{
-			
 			span = "<span id='"+idx.replace(/\:/g,"_")+"_disk'></span><span id='"+idx.replace(/\:/g,"_")+"_tuners'></span><span id='"+idx.replace(/\:/g,"_")+"_usage'></span>";
 		}
 		
 		
 		
 		out = ""
-		out += "<li data-usn='"+idx+"' id=''>"+image+"<B class='device_name' data-usn='"+idx+"' data-type='"+ssdpDevices[idx]['ST']+"' data-roku='"+ssdpDevices[idx]['LOCATION']+"'>" + ssdpDevices[idx]['friendlyName'] + "</b> (" + ssdpDevices[idx]['STy'] + ")<br>";
-		out += "<i>" + ssdpDevices[idx]['manufacturer'] + " " +ssdpDevices[idx]['modelName'] + " " + ssdpDevices[idx]['modelNumber'] + "</i><br>"
-		out += ssdpDevices[idx]['modelDescription'] + ":" + ssdpDevices[idx]['serialNumber'] + "<br>";
+		out += "<li data-usn='"+idx+"' data-type='"+ssdpDevices[idx]['ST']+"' data-roku='"+ssdpDevices[idx]['LOCATION']+"' id=''>"+image+"<span class='content'><B class='device_name' >" + ssdpDevices[idx]['friendlyName'] + "</b><br>";
+		out += "<i>" + ssdpDevices[idx]['manufacturer'] + " .::. " +ssdpDevices[idx]['modelName'] + " " + ssdpDevices[idx]['modelNumber'] + "</i><br>"
+		//out += ssdpDevices[idx]['modelDescription'] + ":" + ssdpDevices[idx]['serialNumber'] + "<br>";
 		out += span
 		//out += "<a href='" + ssdpDevices[idx]['LOCATION'] + "' target='_blank'>"+ssdpDevices[idx]['LOCATION'] + "</a>";
-		out += "<span data-apps='"+idx+"'>";
+		out += "<span class='apps_sb' data-apps='"+idx+"'>";
 		for(idx2 in ssdpDevices[idx]['apps'])
 		{
-var			icon = ssdpDevices[idx]['LOCATION'] + "query/icon/" + idx2;
-			out += "<img src='blank.png' class='roku_app_button' data-imagesrc='"+icon+"' data-url='"+ssdpDevices[idx]['LOCATION']+"launch/"+idx2+"'> ";;
+			var	icon = ssdpDevices[idx]['LOCATION'] + "query/icon/" + idx2;
+			out += "<img src='blank.png' class='roku_app_button' data-imagesrc='"+icon+"' data-url='"+ssdpDevices[idx]['LOCATION']+"launch/"+idx2+"'> ";
 		}
-		out += "</span><br></li>"; 
+		out += "</span></span></li>"; 
 		$("ul").find("[data-usn='" + idx + "']").remove();
 		$("#devices").append(out);
 		
