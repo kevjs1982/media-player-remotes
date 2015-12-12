@@ -1,21 +1,30 @@
 {
-  "manifest_version": 2,
-  "name": "SSDP Discovery and Control",
-  "short_name": "SSDP Discovery",
-  "description": "Discover Networked Media Players",
-  "version": "1",
-  "minimum_chrome_version": "23",
-  "app": {
-    "background": {
-    "scripts": ["main.js"]
-   }
-  },
+  "manifest_version"		: 2,
+  "name"					: "Media Player Controller",
+  "short_name"				: "Media Control",
+  "description"				: "Discover Networked Media Players",
+  "version"					: "1.0.0",
+  "minimum_chrome_version"	: "23",
+  "app": 
+		{
+			"background": 
+				{
+					"scripts": ["main.js"]
+				}
+		},
   "permissions": [
-  "http://*/",
-  "https://*/",
+	"storage",
+	"<all_urls>",
+	"notifications",
+	"unlimitedStorage",
+	{"fileSystem": [
+		"write"
+	]},
+	"http://*/",
+	"https://*/",
     {"socket": [
-    "udp-bind",
-    "udp-send-to"
+		"udp-bind",
+		"udp-send-to"
     ]}
   ]
 }

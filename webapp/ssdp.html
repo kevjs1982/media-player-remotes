@@ -4,17 +4,219 @@
 	<title>SSDP Multicast</title>
 	<script src="ssdp.js"></script>
 	<script src="jquery-1.11.3.js"></script>
+	<script src="jquery.number.js"></script>
+
 	<style>
-		.rokuimg
+		body
 		{
-			width:64px;
-			height:64px;
+			padding:0;
+		}
+		h1
+		{
+			height:40px;
+			font-size:20px;
+			position:absolute;
+			padding:0;
+			margin:0;
+			background-color:blue;
+			color:white;
+			width:100%;
+			left:0;
+			top:0;
+			overflow:hidden;
+		}
+		#content
+		{
+			overflow-y:auto;
+			top:40px;
+			bottom:0;
+			left:0;
+			width:350px;
+			position:absolute;
+		}
+		
+		#roku_remote, #netgem-remote
+		{
+			overflow-y:auto;
+			top:40px;
+			bottom:0;
+			left:350px;
+			right:0;
+			position:absolute;
+		}
+		
+		img.rokuimg
+		{
+			max-width:64px;
+			max-height:64px;
 			float:left;
 		}
-	</style>
+		
+		span.rokuimg img
+		{
+			max-width:64px;
+			max-height:64px;
+			float:left;
+		}
+		.roku_app_button
+		{
+			cursor:pointer;
+			max-width:32px;
+			max-height:32px;
+		}
+
+		ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul.li 
+{
+	font-size:8pt;
+	display:block;
+	float:left;
+	max-width:100%;
+	border-bottom:3px solid red;
+}
+
+	.roku_button_pad
+	{
+		width:60px;
+		padding-right:10px;
+		color:white;
+		background-color:transparent;
+		height:40px;
+		
+	}
+	
+	.roku3
+	{
+		width:60px;
+		padding-right:10px;
+		color:white;
+		background-color:purple;
+		margin:2px;
+		height:40px;
+	}
+	
+	.roku2
+	{
+		height:40px;
+		width:90px;
+		padding-right:10px;
+		color:white;
+		margin:2px;
+		background-color:purple;
+	}
+	#roku_remote br
+	{
+		clear:both;
+	}	
+	#roku_remote .roku_app_button
+	{
+		cursor:pointer;
+		max-width:900px;
+		height:40px;
+		margin:2px;
+		max-height:auto;
+	}
+	
+	.roku_button_pad, .roku2, .roku3, 	#roku_remote .roku_app_button
+	{
+		padding: 4px;
+		-webkit-appearance: none; 
+		-moz-appearance: none; 
+		margin:2px;
+		display:block;
+		float:left;
+		margin:2px;
+	}
+	.roku_apps
+	{
+		clear:both;
+		max-width:260px;
+	}
+		</style>
 	</head>
 	<body>
-		<h1>Discovered Devices</h1>
-		<div id="output" style="font-family: Arial; font-size: 12;overflow:auto;max-height:400px"></div>
+	<h1>Media Players</h1>
+	<div id="content">
+	<ul id="devices">
+	</ul>
+	</div>
+	<div id="roku_remote">
+		<input type="hidden" id="roku_remote_endpoint"></input>
+		
+		<button class="roku_button roku2" data-action="keypress/Back">Back</button>
+		<button class="roku_button roku2" data-action="keypress/Home">Home</button><br>
+		
+		<div class="roku_button_pad"></div>
+		<button class="roku_button roku3" data-action="keypress/Up">Up</button><br>
+		
+		<button class="roku_button roku3" data-action="keypress/Left">Left</button>
+		<button class="roku_button roku3" data-action="keypress/Select">Select</button>
+		<button class="roku_button roku3" data-action="keypress/Right">Right</button><br>
+		
+		<div class="roku_button_pad"></div>
+		<button class="roku_button roku3" data-action="keypress/Down">Down</button><br>
+		
+		<button class="roku_button roku2" data-action="keypress/InstantReplay">InstantReplay</button>
+		<button class="roku_button roku2" data-action="keypress/Info">Info</button><br>
+		
+		<button class="roku_button roku3" data-action="keypress/Rev">Rev</button>
+		<button class="roku_button roku3" data-action="keypress/Play">Play</button>
+		<button class="roku_button roku3" data-action="keypress/Fwd">Fwd</button>
+		
+		<div class="roku_apps"></div>
+		<!--
+		<button class="roku_button" data-action="keypress/Backspace">Backspace</button>
+		<button class="roku_button" data-action="keypress/Search">Search</button>
+		<button class="roku_button" data-action="keypress/Enter">Enter</button>		
+		-->
+ 
+	</div>
+	
+	<div id="netgem-remote">
+	<img src="eeremote.jpg" usemap="remote_control">
+	
+	<map id="remote_control" name="remote_control">
+		<area href="#" shape="circle" title="Power"  coords="137,41,12" data-action='on_off'  >
+		<area href="#" shape="rect" title="2"  coords="65,92,106,115" data-action='2'  >
+		<area href="#" shape="rect" title="1"  coords="14,92,56,117" data-action='1'  >
+		<area href="#" shape="rect" title="3"  coords="116,92,154,115" data-action='3'  >
+		<area href="#" shape="rect" title="4"  coords="14,126,56,148" data-action='4'  >
+		<area href="#" shape="rect" title="5"  coords="66,126,105,148" data-action='5'  >
+		<area href="#" shape="rect" title="6"  coords="116,126,154,148" data-action='6'  >
+		<area href="#" shape="rect" title="7"  coords="14,158,56,179" data-action='7'  >
+		<area href="#" shape="rect" title="8"  coords="65,158,102,179" data-action='8'  >
+		<area href="#" shape="rect" title="9"  coords="114,158,153,179" data-action='9'  >
+		<area href="#" shape="rect" title="Delete / Subtitle"  coords="14,191,56,213" data-action='delete'  >
+		<area href="#" shape="rect" title="0"  coords="63,190,103,211" data-action='0'  >
+		<area href="#" shape="rect" title="Text"  coords="114,191,153,209" data-action='text'  >
+		<area href="#" shape="rect" title="Previous"  coords="19,234,56,260" data-action='prev'  >
+		<area href="#" shape="rect" title="Play / Pause"  coords="57,234,110,260" data-action='play_pause'  >
+		<area href="#" shape="rect" title="Next"  coords="111,234,153,260" data-action='next'  >
+		<area href="#" shape="rect" title="Guide"  coords="17,415,79,435" data-action='guide'  >
+		<area href="#" shape="rect" title="Record"  coords="93,415,155,435" data-action='rec'  >
+		<area href="#" shape="rect" title="Back"  coords="20,365,58,393" data-action='back'  >
+		<area href="#" shape="rect" title="Menu"  coords="60,365,115,393" data-action='menu'  >
+		<area href="#" shape="rect" title="Info"  coords="114,365,157,393" data-action='info'  >
+		<area href="#" shape="circle" title="Green"  coords="66,459,12" data-action='green'  >
+		<area href="#" shape="circle" title="Yellow"  coords="107,459,12" data-action='yellow'  >
+		<area href="#" shape="circle" title="Blue"  coords="146,459,12" data-action='blue'  >
+		<area href="#" shape="circle" title="Red"  coords="26,459,12" data-action='red'  >
+		<area href="#" shape="circle" title="OK"  coords="85,312,17" data-action='ok'  >
+		<area href="#" shape="rect" title="Vol+"  coords="11,275,39,314" data-action='vol_up'  >
+		<area href="#" shape="rect" title="Vol-"  coords="11,315,39,350" data-action='vol_down'  >
+		<area href="#" shape="rect" title="Left"  coords="42,294,66,327" data-action='left'  >
+		<area href="#" shape="rect" title="Down"  coords="66,328,104,358" data-action='down'  >
+		<area href="#" shape="rect" title="Up"  coords="66,270,104,294" data-action='up'  >
+		<area href="#" shape="rect" title="Right"  coords="104,294,130,327" data-action='right'  >
+		<area href="#" shape="rect" title="Channel -"  coords="133,315,161,350" data-action='ch_down'  >
+		<area href="#" shape="rect" title="Channel +"  coords="133,275,161,314" data-action='ch_up'  >
+	</map>
+
+	</div>
 	</body>
 </html>
