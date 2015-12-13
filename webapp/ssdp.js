@@ -64,14 +64,62 @@ window.addEventListener("load", function()
 
 		
 
-		$('#remote_control').on('click','area',function(e){	
-		//console.log($(this).data('action'))
+		$('#remote_control').on('click','area',function(e)
+		{		
 			e.preventDefault();
-			$.ajax({
-			type:'POST',
-				url: $('#roku_remote_endpoint').val() + 'RemoteControl/KeyHandling/sendKey?avoidLongPress=1&key=' + $(this).data('action'),
-			dataType : 'json',
-			})
+			var button = $(this).data('action');
+			var ep = $('#roku_remote_endpoint').val().split("/"); 	
+			var url = ep[0] + "//" + ep[2]
+			if (button == "vol_down")
+			{
+				$.ajax(
+				{
+					type:'POST',
+					url: url + '/RemoteControl/Volume/get',
+					dataType : 'json',
+				}).done(function(reply) 
+				{
+					level = reply.volume - 7;
+					if (level <0)
+					{
+						level = 0;
+					}	
+					$.ajax({
+						type:'POST',
+						url: url + '/RemoteControl/Volume/set?volume='+level,
+						dataType : 'json',
+					})
+				});
+			}
+			else if(button == "vol_up")
+			{
+				$.ajax(
+				{
+					type:'POST',
+					url: url + '/RemoteControl/Volume/get',
+					dataType : 'json',
+				}).done(function(reply) 
+				{
+					level = reply.volume + 7;
+					if (level >100)
+					{
+						level = 100;
+					}	
+					$.ajax({
+						type:'POST',
+						url: url + '/RemoteControl/Volume/set?volume='+level,
+						dataType : 'json',
+					});
+				});
+			}
+			else
+			{
+				$.ajax({
+					type:'POST',
+					url: url +'/RemoteControl/KeyHandling/sendKey?avoidLongPress=1&key='+button,
+					dataType : 'json',
+				});
+			}
 		});
 
 		
