@@ -153,6 +153,11 @@ window.addEventListener("load", function()
 					//console.log($("body").find("[data-apps='" + idx + "']").html());
 					$('.roku_apps').html($("body").find("[data-apps='" + idx + "']").html());
 					break;
+				case 'upnp:rootdevice':
+					$('#netgem-remote').hide();
+					$('#roku_remote').hide();
+					break;
+					
 			}		
 					
 			$('#roku_remote_endpoint').val($(this).data('roku'));
@@ -226,24 +231,27 @@ var recieveData = function(socket, sid)
 		var ssdp_info = data.split("|");
 		var me = new Array();
 		me['goRender'] = false;
+		me['modelName'] = "";
+		me['modelDescription'] = "";
+		me['modelNumber'] = "";
+		me['manufacturer'] = "";
+		me['serialNumber'] = "";
+		me['STy'] = "";
+		
 		for(idx in ssdp_info)
 		{
 			i = splitWithTail(ssdp_info[idx],":",1);
-			me[i[0].trim().toUpperCase()] = (i[1] + "").trim()
+			if(i[0].trim().toUpperCase() != "")
+			{
+				me[i[0].trim().toUpperCase()] = (i[1] + "").trim()
+			}
 		}
-		//console.log(me);
 		if(typeof ssdpDevices[me['USN']] === 'undefined' && typeof me['LOCATION'] !== 'undefined') 
 		{
 			// We don't already know about this device,
 			// And the device has a location
-
+ 
 			me['friendlyName'] = me['LOCATION'];
-			me['modelName'] = "";
-			me['modelDescription'] = "";
-			me['modelNumber'] = "";
-			me['manufacturer'] = "";
-			me['serialNumber'] = "";
-			me['STy'] = "";
 			
 			switch(me['ST'])
 			{
@@ -255,7 +263,12 @@ var recieveData = function(socket, sid)
 					break;
 				case 'roku:ecp': 
 					me['STy'] = "Roku";
+					me['modelName'] = "Roku";
 					break;
+				case 'upnp:rootdevice':
+					me['STy'] = "Root";
+					break;
+				default:
 			}
 			ssdpDevices[me['USN']] = me;
 			parseDesc(me['USN']);
@@ -271,8 +284,9 @@ function parseDesc(usn)
 		  url: url,
 		  dataType : 'xml',
 		}).done(function(data) {
-			
+			var okaytorender = true;
 		  //console.log(data);
+			
 			ssdpDevices[usn]['URLBase'] = $(data).find('URLBase').text().trim();
 			ssdpDevices[usn]['presentationURL'] = $(data).find('presentationURL').text().trim();
 			$(data).find('device').each(function()
@@ -284,14 +298,38 @@ function parseDesc(usn)
 				ssdpDevices[usn]['manufacturer'] = $(this).find('manufacturer').text().trim();
 				ssdpDevices[usn]['modelName'] = $(this).find('modelName').text().trim();
 				
+				// We need to filter out rootdevices to leave us only with Kodi's
+				if(ssdpDevices[usn]['ST'] == "upnp:rootdevice")
+				{
+					console.log(ssdpDevices[usn]);
+					ssdpDevices[usn]['goRender'] = true;
+					if(ssdpDevices[usn]['modelName'] == 'XBMC Media Center' || ssdpDevices[usn]['modelName'] == 'Kodi')
+					{
+						ssdpDevices[usn]['STy'] = 'Kodi';
+					}
+					else
+					{
+						ssdpDevices[usn]['STy'] = '';
+						okaytorender = false;
+					}
+					
+				}
+				
 				if (ssdpDevices[usn]['URLBase'] == "")
 				{
-					if (ssdpDevices[usn]['presentationURL'] == "")
+					if(ssdpDevices[usn]['STy'] == 'Kodi')
 					{
+						// Kodi uses the UPnP Server as the bases
+						ssdpDevices[usn]['URLBase'] = url;
+					}
+					else if (ssdpDevices[usn]['presentationURL'] == "")
+					{
+						// As do deives without a presentationURL
 						ssdpDevices[usn]['URLBase'] = url;
 					}
 					else
 					{
+						// However most devices use the presentationURL as the base if it's specified
 						ssdpDevices[usn]['URLBase'] = ssdpDevices[usn]['presentationURL'];
 					}
 				}
@@ -312,20 +350,23 @@ function parseDesc(usn)
 				{
 					loadEETV(usn)
 				}
+				
 			}
 			);
 			
+			var w = 0;
 			$(data).find('icon').each(function()
 			{
-				
-				ssdpDevices[usn]['icon'] = ssdpDevices[usn]['URLBase'].replace(/\/+$/,'') + $(this).find('url').text();
-				//console.log(ssdpDevices[usn]['icon'])
+				var myw = $(this).find('width').text();
+				if (myw > w || w == 0)
+				{
+					ssdpDevices[usn]['icon'] = ssdpDevices[usn]['URLBase'].replace(/\/+$/,'') + $(this).find('url').text();
+					w = myw;
+				}
 			}
 			);
-			ssdpDevices[usn]['goRender'] = true;
+			ssdpDevices[usn]['goRender'] = okaytorender;
 			redrawSSDPList(usn);
-
-
 	});
 }
 
