@@ -5,7 +5,8 @@ var ssdpData = "";
 var ssdpDevices = new Array();
 var images_count = 0;
 var knownDevices = new Array();
-
+var fire_tv_proxy = "";
+var fire_tv_active = "";
 /*
  * This function will be called when this js is loaded.
  */
@@ -58,6 +59,8 @@ window.addEventListener("load", function()
 			})
 			$('#netgem-remote').hide();
 			$('#roku_remote').hide();
+			$('#fire_remote').hide();
+			$('#fire_proxy').hide();
 			//console.log(roku_images);
 			ssdpStart();
 		});
@@ -140,14 +143,38 @@ window.addEventListener("load", function()
 				case 'urn:dial-multiscreen-org:device:dial:1':
 					$('#netgem-remote').hide();
 					$('#roku_remote').hide();
+					if ($(this).data('type2') == 'FireTV' && fire_tv_proxy <> "")
+					{
+						$('#fire_remote').show();
+						fire_tv_active = ssdpDevices[$(this).data('usn').trim()]['URLBase'];
+						fire_tv_active = fire_tv_active.replace("http://","").replace("https://","");
+						fire_tv_active = fire_tv_active.split(":");
+						fire_tv_active = fire_tv_active[0] + "/5555/";
+						console.log(fire_tv_active);
+						//URLBase
+						//http://systems-shared:8080/keypress/192.168.6.139/5555/19
+					}
+					else if (fire_tv_proxy == "")
+					{$('#fire_remote').show();
+						$('#fire_proxy').hide();
+					}
+					else
+					{
+						$('#fire_remote').hide();
+						$('#fire_proxy').show();
+					}
 					break;
 				case 'urn:netgem:device:Netbox:1':
 					$('#netgem-remote').show();
 					$('#roku_remote').hide();
+					$('#fire_remote').hide();
+					$('#fire_proxy').hide();
 					break;
 				case 'roku:ecp': 
 					$('#netgem-remote').hide();
 					$('#roku_remote').show();
+					$('#fire_remote').hide();
+					$('#fire_proxy').hide();
 					var idx = $(this).data('usn');
 					//console.log(idx);
 					//console.log($("body").find("[data-apps='" + idx + "']").html());
@@ -156,6 +183,8 @@ window.addEventListener("load", function()
 				case 'upnp:rootdevice':
 					$('#netgem-remote').hide();
 					$('#roku_remote').hide();
+					$('#fire_remote').hide();
+					$('#fire_proxy').hide();
 					break;
 					
 			}		
@@ -174,6 +203,16 @@ window.addEventListener("load", function()
 		
 		$('body').on('click','.roku_button',function(){	
 			var callurl = $('#roku_remote_endpoint').val() +  $(this).data('action')
+			$.ajax({
+			type:'POST',
+				url:callurl,
+			dataType : 'xml',
+			})
+		});
+		
+		$('body').on('click','.fire_button',function(){	
+			var callurl = fire_tv_proxy + "/keypress/" + fire_tv_active + $(this).data('action')
+
 			$.ajax({
 			type:'POST',
 				url:callurl,
@@ -255,6 +294,9 @@ var recieveData = function(socket, sid)
 			
 			switch(me['ST'])
 			{
+				case 'urn:firecontrol-kjs-me-uk:device:control:1':
+					me['STy'] = "Fire TV Control";
+					break;
 				case 'urn:dial-multiscreen-org:device:dial:1':
 					me['STy'] = "DIAL";
 					break;
@@ -285,7 +327,7 @@ function parseDesc(usn)
 		  dataType : 'xml',
 		}).done(function(data) {
 			var okaytorender = true;
-		  //console.log(data);
+			
 			
 			ssdpDevices[usn]['URLBase'] = $(data).find('URLBase').text().trim();
 			ssdpDevices[usn]['presentationURL'] = $(data).find('presentationURL').text().trim();
@@ -294,6 +336,8 @@ function parseDesc(usn)
 				var fn = $(this).find('friendlyName').text();
 				ssdpDevices[usn]['friendlyName'] = fn.trim();
 			//	console.log(ssdpDevices[usn]['friendlyName'])
+			//console.info(fn.trim() + " " + url);
+			//console.log(data);
 				//console.log(data);
 				ssdpDevices[usn]['manufacturer'] = $(this).find('manufacturer').text().trim();
 				ssdpDevices[usn]['modelName'] = $(this).find('modelName').text().trim();
@@ -301,7 +345,7 @@ function parseDesc(usn)
 				// We need to filter out rootdevices to leave us only with Kodi's
 				if(ssdpDevices[usn]['ST'] == "upnp:rootdevice")
 				{
-					console.log(ssdpDevices[usn]);
+					//console.log(ssdpDevices[usn]);
 					ssdpDevices[usn]['goRender'] = true;
 					if(ssdpDevices[usn]['modelName'] == 'XBMC Media Center' || ssdpDevices[usn]['modelName'] == 'Kodi')
 					{
@@ -313,6 +357,11 @@ function parseDesc(usn)
 						okaytorender = false;
 					}
 					
+				}
+				if (ssdpDevices[usn]['STy'] == 'Fire TV Control')
+				{
+					//console.error(ssdpDevices);
+					fire_tv_proxy = ssdpDevices[usn]['URLBase'];
 				}
 				
 				if (ssdpDevices[usn]['URLBase'] == "")
@@ -337,6 +386,12 @@ function parseDesc(usn)
 				{
 					ssdpDevices[usn]['modelName'] = "Chromecast";
 				}
+				
+				if (ssdpDevices[usn]['modelName'] == 'FireTV Stick' && ssdpDevices[usn]['ST'] == 'urn:dial-multiscreen-org:device:dial:1')
+				{
+					ssdpDevices[usn]['STy'] = 'FireTV';
+				}
+				
 				ssdpDevices[usn]['modelDescription'] = $(this).find('modelDescription').text().trim();
 				ssdpDevices[usn]['modelNumber'] = $(this).find('modelNumber').text().trim();
 				ssdpDevices[usn]['serialNumber'] = $(this).find('serialNumber').text().trim();
@@ -349,6 +404,10 @@ function parseDesc(usn)
 				else if(ssdpDevices[usn]['ST'] == "urn:netgem:device:Netbox:1")
 				{
 					loadEETV(usn)
+				}
+				else if(ssdpDevices[usn]['ST'] == "urn:dial-multiscreen-org:device:dial:1")
+				{
+					loadChromecast(usn)
 				}
 				
 			}
@@ -406,7 +465,54 @@ function loadEETV(usn)
 	});
 }
 
+function loadChromecast(usn)
+{
+	//console.log(ssdpDevices[usn])
+	//console.log("CC " + ssdpDevices[usn]['URLBase'] + '/setup/eureka_info?options=detail')
+	$.ajax({
+		url: ssdpDevices[usn]['URLBase'] + '/setup/eureka_info?options=detail',
+		dataType : 'json',
+	}).done(function(data) 
+	{
+		//console.log(data);
+		//var ee_clock = new Date(data.system.time)
+		//$( "#time" ).html(ee_clock.format('dd-mmm-yyyy HH:MM:ss'));
+		//$( "#"+usn.replace(/\:/,"_")+"_disk" ).progressbar({value:data.pvr.status.disk.percent});
+		//$( "#"+usn.replace(/\:/g,"_")+"_tuners" ).html(data.system.tuners + " tuners.&nbsp;&nbsp;");
+		//var used = data.pvr.status.disk.usedSpace / 1024 / 1024
+		//var total = data.pvr.status.disk.totalSpace / 1024 / 1024
+		var snr = data.signal_level - data.noise_level;
+		$( "#"+usn.replace(/\:/g,"_")+"_chromecast" ).html(snr2bars(snr) + " " + data.release_track + " " + data.cast_build_revision + " Uptime: " + data.uptime + "</i>");
+	});
+}
 
+function snr2bars(snr)
+{
+	if (snr > 40)
+	{
+		return "<img src='/images/wifi/5.png' class='ss'>";
+	}
+	else if(snr > 33)
+	{
+		return "<img src='/images/wifi/4.png' class='ss'>";
+	}
+	else if(snr > 25)
+	{
+		return "<img src='/images/wifi/3.png' class='ss'>";
+	}
+	else if(snr > 15)
+	{
+		return "<img src='/images/wifi/2.png' class='ss'>";
+	}
+	else if(snr > 10)
+	{
+		return "<img src='/images/wifi/1.png' class='ss'>";
+	}
+	else
+	{
+		return "<img src='/images/wifi/0.png' class='ss'>";
+	}
+}
 var Roku = {
 
 	loadApps : function(usn)
@@ -454,10 +560,15 @@ function redrawSSDPList(usn)
 			span = "<span id='"+idx.replace(/\:/g,"_")+"_disk'></span><span id='"+idx.replace(/\:/g,"_")+"_tuners'></span><span id='"+idx.replace(/\:/g,"_")+"_usage'></span>";
 		}
 		
+		if ( ssdpDevices[idx]['ST'] == 'urn:dial-multiscreen-org:device:dial:1')
+		{
+			span = "<span id='"+idx.replace(/\:/g,"_")+"_chromecast'></span>";
+		}
+		
 		
 		
 		out = ""
-		out += "<li data-usn='"+idx+"' data-type='"+ssdpDevices[idx]['ST']+"' data-roku='"+ssdpDevices[idx]['LOCATION']+"' id=''>"+image+"<span class='content'><B class='device_name' >" + ssdpDevices[idx]['friendlyName'] + "</b><br>";
+		out += "<li data-usn='"+idx+"' data-type='"+ssdpDevices[idx]['ST']+"' data-type2='"+ssdpDevices[idx]['STy']+"' data-roku='"+ssdpDevices[idx]['LOCATION']+"' id=''>"+image+"<span class='content'><B class='device_name' >" + ssdpDevices[idx]['friendlyName'] + "</b><br>";
 		out += "<i>" + ssdpDevices[idx]['manufacturer'] + " .::. " +ssdpDevices[idx]['modelName'] + " " + ssdpDevices[idx]['modelNumber'] + "</i><br>"
 		//out += ssdpDevices[idx]['modelDescription'] + ":" + ssdpDevices[idx]['serialNumber'] + "<br>";
 		out += span

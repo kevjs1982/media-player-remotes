@@ -1,0 +1,307 @@
+diff a/webapp/ssdp.js b/webapp/ssdp.js	(rejected hunks)
+@@ -21,9 +56,77 @@
+ 				roku = $(this);
+ 				roku_images[roku.attr('prefix')] = "/images/roku/" + roku.attr('image') + ".png";
+ 			})
+-			console.log(roku_images);
++			$('#netgem-remote').hide();
++			$('#roku_remote').hide();
++			//console.log(roku_images);
+ 			ssdpStart();
+ 		});
++
++		
++
++		$('#remote_control').on('click','area',function(e){	
++		console.log($(this).data('action'))
++			e.preventDefault();
++			$.ajax({
++			type:'POST',
++				url: $('#roku_remote_endpoint').val() + 'RemoteControl/KeyHandling/sendKey?avoidLongPress=1&key=' + $(this).data('action'),
++			dataType : 'json',
++			})
++		});
++
++		
++		
++		$('body').on('click','.roku_app_button',function(){	
++			$.ajax({
++			type:'POST',
++				url: $(this).data('url'),
++			dataType : 'xml',
++			})
++		});
++
++		$('body').on('click','.device_name',function(){	
++		
++			switch($(this).data('type'))
++			{
++				case 'urn:dial-multiscreen-org:device:dial:1':
++					$('#netgem-remote').hide();
++					$('#roku_remote').hide();
++					break;
++				case 'urn:netgem:device:Netbox:1':
++					$('#netgem-remote').show();
++					$('#roku_remote').hide();
++					break;
++				case 'roku:ecp': 
++					$('#netgem-remote').hide();
++					$('#roku_remote').show();
++					var idx = $(this).data('usn');
++					console.log(idx);
++					console.log($("body").find("[data-apps='" + idx + "']").html());
++					$('.roku_apps').html($("body").find("[data-apps='" + idx + "']").html());
++					break;
++			}		
++					
++			$('#roku_remote_endpoint').val($(this).data('roku'));
++
++		
++		});
++		
++		$('body').on('click','.netgem_dev',function(){	
++			$('#netgem_remote_endpoint').val($(this).data('netgem'));
++
++		
++		});
++		
++		
++		$('body').on('click','.roku_button',function(){	
++			var callurl = $('#roku_remote_endpoint').val() +  $(this).data('action')
++			$.ajax({
++			type:'POST',
++				url:callurl,
++			dataType : 'xml',
++			})
++		});
++
+ 	});
+ 
+ 
+@@ -126,55 +222,189 @@
+ 		  url: url,
+ 		  dataType : 'xml',
+ 		}).done(function(data) {
++			
+ 		  //console.log(data);
+-		  
+-		$(data).find('device').each(function()
+-		{
+-			var fn = $(this).find('friendlyName').text();
+-			ssdpDevices[usn]['friendlyName'] = fn.trim();
+-			ssdpDevices[usn]['manufacturer'] = $(this).find('manufacturer').text().trim();
+-			ssdpDevices[usn]['modelName'] = $(this).find('modelName').text().trim();
+-			if (ssdpDevices[usn]['modelName'] == 'Eureka Dongle' && ssdpDevices[usn]['manufacturer'])
++			ssdpDevices[usn]['URLBase'] = $(data).find('URLBase').text().trim();
++			ssdpDevices[usn]['presentationURL'] = $(data).find('presentationURL').text().trim();
++			$(data).find('device').each(function()
+ 			{
+-				ssdpDevices[usn]['modelName'] = "Chromecast";
++				var fn = $(this).find('friendlyName').text();
++				ssdpDevices[usn]['friendlyName'] = fn.trim();
++			//	console.log(ssdpDevices[usn]['friendlyName'])
++				//console.log(data);
++				ssdpDevices[usn]['manufacturer'] = $(this).find('manufacturer').text().trim();
++				ssdpDevices[usn]['modelName'] = $(this).find('modelName').text().trim();
++				
++				if (ssdpDevices[usn]['URLBase'] == "")
++				{
++					if (ssdpDevices[usn]['presentationURL'] == "")
++					{
++						ssdpDevices[usn]['URLBase'] = url;
++					}
++					else
++					{
++						ssdpDevices[usn]['URLBase'] = ssdpDevices[usn]['presentationURL'];
++					}
++				}
++				if (ssdpDevices[usn]['modelName'] == 'Eureka Dongle' && ssdpDevices[usn]['manufacturer'])
++				{
++					ssdpDevices[usn]['modelName'] = "Chromecast";
++				}
++				ssdpDevices[usn]['modelDescription'] = $(this).find('modelDescription').text().trim();
++				ssdpDevices[usn]['modelNumber'] = $(this).find('modelNumber').text().trim();
++				ssdpDevices[usn]['serialNumber'] = $(this).find('serialNumber').text().trim();
++				ssdpDevices[usn]['icon'] = "";
++				ssdpDevices[usn]['apps'] = new Array();
++				if (ssdpDevices[usn]['ST'] == "roku:ecp")
++				{
++					Roku.loadApps(usn)
++				}
++				else if(ssdpDevices[usn]['ST'] == "urn:netgem:device:Netbox:1")
++				{
++					loadEETV(usn)
++				}
+ 			}
+-			ssdpDevices[usn]['modelDescription'] = $(this).find('modelDescription').text().trim();
+-			ssdpDevices[usn]['modelNumber'] = $(this).find('modelNumber').text().trim();
+-			ssdpDevices[usn]['serialNumber'] = $(this).find('serialNumber').text().trim();
+-			//var Manufacturers = $(this).find('Manufacturer').text();
+-			//$(this).find('friendlyName').text()
+-			//$("<li></li>").html(Titles + ", " + Manufacturers).appendTo("#Autom ul");
+-			//console.log(fn);
+-			redrawSSDPList();
+-		}
+-		);
++			);
++			
++			$(data).find('icon').each(function()
++			{
++				
++				ssdpDevices[usn]['icon'] = ssdpDevices[usn]['URLBase'].replace(/\/+$/,'') + $(this).find('url').text();
++				//console.log(ssdpDevices[usn]['icon'])
++			}
++			);
++			ssdpDevices[usn]['goRender'] = true;
++			redrawSSDPList(usn);
+ 
+ 
+-		});
++	});
+ }
+-function redrawSSDPList()
++
++function loadDataImage(id)
+ {
+-	var out = "<ul>";
+-	
+-	for(idx in ssdpDevices)
++	try
+ 	{
+-		if (ssdpDevices[idx]['STy']!="" )
++		//console.log("Load Image >> " + id);
++		var remoteImage 
++		if (typeof($(id).data('imagesrc'))!=='undefined')
+ 		{
+-			image = "";
+-			if ( ssdpDevices[idx]['ST'] == 'roku:ecp' && typeof(roku_images[ssdpDevices[idx]['serialNumber'].substring(0,2)])!=='undefined')
++			getImage($(id).data('imagesrc'),id.replace("#",""));
++		}
++	}
++	catch(e)
++	{
++		
++		//console.log("RAL Errored " + id);
++		//console.log(e);
++	}
++}
++function loadEETV(usn)
++{
++	//console.log("EE " + ssdpDevices[usn]['presentationURL'] + '/UPnP/Device/getInfo')
++	$.ajax({
++		url: ssdpDevices[usn]['presentationURL'] + 'UPnP/Device/getInfo',
++		dataType : 'json',
++	}).done(function(data) 
++	{
++		//var ee_clock = new Date(data.system.time)
++		//$( "#time" ).html(ee_clock.format('dd-mmm-yyyy HH:MM:ss'));
++		//$( "#"+usn.replace(/\:/,"_")+"_disk" ).progressbar({value:data.pvr.status.disk.percent});
++		$( "#"+usn.replace(/\:/g,"_")+"_tuners" ).html(data.system.tuners + " tuners");
++		var used = data.pvr.status.disk.usedSpace / 1024 / 1024
++		var total = data.pvr.status.disk.totalSpace / 1024 / 1024
++		$( "#"+usn.replace(/\:/g,"_")+"_usage" ).html("<i>" + $.number(used,2) + " of " + $.number(total,2) + " GiB used</i>");
++	});
++}
++
++
++var Roku = {
++
++	loadApps : function(usn)
++	{
++		var idx = usn;
++		url = ssdpDevices[idx]['LOCATION'] + "query/apps";
++		$.ajax({
++				url: url,
++				dataType : 'xml',
++			}).done(function(data) 
+ 			{
+-				
+-				image = "<img class='rokuimg' src='" + roku_images[ssdpDevices[idx]['serialNumber'].substring(0,2)] + "'>";
+-			}
+-			out += "<li>"+image+"<B>" + ssdpDevices[idx]['friendlyName'] + "</b> (" + ssdpDevices[idx]['STy'] + ")<br>";
+-			out += "<i>" + ssdpDevices[idx]['manufacturer'] + " " +ssdpDevices[idx]['modelName'] + " " + ssdpDevices[idx]['modelNumber'] + "</i><br>"
+-			out += ssdpDevices[idx]['modelDescription'] + ":" + ssdpDevices[idx]['serialNumber'] + "<br>";
+-			out += "<a href='" + ssdpDevices[idx]['LOCATION'] + "' target='_blank'>"+ssdpDevices[idx]['LOCATION'] + "</a><br></li>"; 
+-			//: <a href='" + ssdpDevices[idx]['LOCATION'] + "' target='_blank'>"+ssdpDevices[idx]['friendlyName'] + " <b>" + ssdpDevices[idx]['manufacturer'] + " </b><i>" +ssdpDevices[idx]['modelName'] + "</i></a></li>"
++				$(data).find('apps').each(function()
++				{
++					$(this).find('app').each(function()
++					{
++						roku = $(this);
++						ssdpDevices[idx]['apps'][roku.attr('id')] = roku.text();
++					});
++				})
++				redrawSSDPList(idx);
++			});
++	},
++	dummy : function () {}
++}
++
++function redrawSSDPList(usn)
++{
++	var idx = usn;
++	if (ssdpDevices[idx]['STy']!="" )
++	{
++		image = "";
++		image_id = false;
++		if ( ssdpDevices[idx]['ST'] == 'roku:ecp' && typeof(roku_images[ssdpDevices[idx]['serialNumber'].substring(0,2)])!=='undefined')
++		{
++			image = "<img class='rokuimg' src='" + roku_images[ssdpDevices[idx]['serialNumber'].substring(0,2)] + "'>";
++		}
++		else if(ssdpDevices[idx]['icon'] != "")
++		{
++			image_id = "icon_" + images_count++;
++			image = "<span id='" + image_id + "' class='rokuimg' data-imagesrc='" + ssdpDevices[idx]['icon'] + "'></span>";
++		}
++		var span = "";
++		if ( ssdpDevices[idx]['ST'] == 'urn:netgem:device:Netbox:1')
++		{
++			
++			span = "<span id='"+idx.replace(/\:/g,"_")+"_disk'></span><span id='"+idx.replace(/\:/g,"_")+"_tuners'></span><span id='"+idx.replace(/\:/g,"_")+"_usage'></span>";
++		}
++		
++		
++		
++		out = ""
++		out += "<li data-usn='"+idx+"' id=''>"+image+"<B class='device_name' data-usn='"+idx+"' data-type='"+ssdpDevices[idx]['ST']+"' data-roku='"+ssdpDevices[idx]['LOCATION']+"'>" + ssdpDevices[idx]['friendlyName'] + "</b> (" + ssdpDevices[idx]['STy'] + ")<br>";
++		out += "<i>" + ssdpDevices[idx]['manufacturer'] + " " +ssdpDevices[idx]['modelName'] + " " + ssdpDevices[idx]['modelNumber'] + "</i><br>"
++		out += ssdpDevices[idx]['modelDescription'] + ":" + ssdpDevices[idx]['serialNumber'] + "<br>";
++		out += span
++		//out += "<a href='" + ssdpDevices[idx]['LOCATION'] + "' target='_blank'>"+ssdpDevices[idx]['LOCATION'] + "</a>";
++		out += "<span data-apps='"+idx+"'>";
++		for(idx2 in ssdpDevices[idx]['apps'])
++		{
++var			icon = ssdpDevices[idx]['LOCATION'] + "query/icon/" + idx2;
++			out += "<img src='blank.png' class='roku_app_button' data-imagesrc='"+icon+"' data-url='"+ssdpDevices[idx]['LOCATION']+"launch/"+idx2+"'> ";;
++		}
++		out += "</span><br></li>"; 
++		$("ul").find("[data-usn='" + idx + "']").remove();
++		$("#devices").append(out);
++		
++		for(idx2 in ssdpDevices[idx]['apps'])
++		{
++			//out += "<span class='roku_app_button' data-url='"+ssdpDevices[idx]['LOCATION']+"launch/"+idx2+"'>" + ssdpDevices[idx]['apps'][idx2] + "</span>,";
++			autoGetImage($("ul").find("[data-url='" + ssdpDevices[idx]['LOCATION']+"launch/"+idx2 + "']"));
++		}
++		
++		
++		
++		if (image_id!=false)
++		{
++			loadDataImage("#"+image_id)
++		}
++
++		
++						var options = {
++		  type: "basic",
++		  title: "New Media Player Found!",
++		  message: ssdpDevices[idx]['friendlyName'],
++		  iconUrl: "play.png"
+ 		}
++		chrome.notifications.create("ntfn_image_id", options, function() { });				
+ 	}
+-	out += "</ul>";
+-	output.innerHTML = out;
+ }
+ 
+ /*

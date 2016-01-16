@@ -13,6 +13,10 @@
 *, *:before, *:after {
   box-sizing: inherit;
 }
+img.ss
+{
+height:12px;
+}
 		body
 		{
 			padding:0;
@@ -58,7 +62,7 @@
 			max-height:64px;
 			float:left;
 		}
-		.roku_app_button
+		.roku_app_button, .fire_app_button
 		{
 			cursor:pointer;
 			max-width:32px;
@@ -108,7 +112,7 @@
 		color:#212121;
 	}
 
-	.roku_button_pad
+	.roku_button_pad, .fire_button_pad
 	{
 		width:60px;
 		padding-right:10px;
@@ -118,7 +122,7 @@
 		
 	}
 	
-	.roku3
+	.roku3, .fire3
 	{
 		width:60px;
 		padding-right:10px;
@@ -128,7 +132,7 @@
 		height:40px;
 	}
 	
-	.roku2
+	.roku2, .fire2
 	{
 		height:40px;
 		width:90px;
@@ -137,11 +141,11 @@
 		margin:2px;
 		background-color:purple;
 	}
-	#roku_remote br
+	#roku_remote br, #fire_remote br
 	{
 		clear:both;
 	}	
-	#roku_remote .roku_app_button
+	#roku_remote .roku_app_button, #fire_remote .fire_app_button
 	{
 		cursor:pointer;
 		max-width:900px;
@@ -150,7 +154,7 @@
 		max-height:600px;
 	}
 	
-	.roku_button_pad, .roku2, .roku3
+	.roku_button_pad, .roku2, .roku3, .fire_button_pad, .fire2, .fire3
 	{
 		padding: 4px;
 		-webkit-appearance: none; 
@@ -160,7 +164,7 @@
 		float:left;
 		margin:2px;
 	}
-	.roku_apps
+	.roku_apps, .fire_apps
 	{
 		clear:both;
 		position:absolute;
@@ -171,13 +175,13 @@
 		bottom:0;
 		background-color:#536DFE;
 	}
-	.roku_apps img
+	.roku_apps img, .fire_apps img
 	{
 		border:2px solid white;
 		padding:0;
 	}
 	
-	#roku_remote, #netgem-remote
+	#roku_remote, #netgem-remote, #fire_remote
 	{
 		top:40px;
 		bottom:0;
@@ -199,6 +203,38 @@
 	<ul id="devices">
 	</ul>
 	</div>
+		<div id="fire_proxy">Fire Proxy Not Found</div>
+		<div id="fire_remote">
+
+
+		<div class="fire_button_pad"></div>
+		<button class="fire_button fire3" data-action="UP">&#x25B2;</button><br>
+		
+		<button class="fire_button fire3" data-action="LEFT">&#x25C4;</button>
+		<button class="fire_button fire3" data-action="ENTER">Select</button>
+		<button class="fire_button fire3" data-action="RIGHT">&#x25BA;</button><br>
+		
+		<div class="fire_button_pad"></div>
+		<button class="fire_button fire3" data-action="DOWN">&#x25BC;</button><br>
+		
+		<button class="fire_button fire3" data-action="BACK">&#x1F519;</button>
+		<button class="fire_button fire3" data-action="HOME">&#x1F3E0;</button>
+		<button class="fire_button fire3" data-action="OPTIONS">--</button>
+		<br>
+		
+		<button class="fire_button fire3" data-action="PREVIOUS">&#x25C4;&#x25C4;</button>
+		<button class="fire_button fire3" data-action="PLAYPAUSE">&#x25BA;</button>
+		<button class="fire_button fire3" data-action="NEXT">&#x25BA;&#x25BA;</button>
+
+		
+		
+		
+		
+		<div class="fire_apps"></div>
+
+		
+		
+		</div>
 	<div id="roku_remote">
 		<input type="hidden" id="roku_remote_endpoint"></input>
 		
