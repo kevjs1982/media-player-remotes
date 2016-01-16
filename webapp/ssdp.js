@@ -143,14 +143,14 @@ window.addEventListener("load", function()
 				case 'urn:dial-multiscreen-org:device:dial:1':
 					$('#netgem-remote').hide();
 					$('#roku_remote').hide();
-					if ($(this).data('type2') == 'FireTV' && fire_tv_proxy <> "")
+					if ($(this).data('type2') == 'FireTV' && fire_tv_proxy != "")
 					{
 						$('#fire_remote').show();
 						fire_tv_active = ssdpDevices[$(this).data('usn').trim()]['URLBase'];
 						fire_tv_active = fire_tv_active.replace("http://","").replace("https://","");
 						fire_tv_active = fire_tv_active.split(":");
 						fire_tv_active = fire_tv_active[0] + "/5555/";
-						console.log(fire_tv_active);
+						//console.log(fire_tv_active);
 						//URLBase
 						//http://systems-shared:8080/keypress/192.168.6.139/5555/19
 					}
@@ -362,6 +362,7 @@ function parseDesc(usn)
 				{
 					//console.error(ssdpDevices);
 					fire_tv_proxy = ssdpDevices[usn]['URLBase'];
+					okaytorender = false;
 				}
 				
 				if (ssdpDevices[usn]['URLBase'] == "")
