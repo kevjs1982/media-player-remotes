@@ -17,9 +17,26 @@ img.ss
 {
 height:12px;
 }
+#fsapi_mode
+{
+display:none;
+}
 		body
 		{
 			padding:0;
+		}
+		#radio_logos img
+		{
+			max-width:320px;
+			max-height:240px;
+			max-width:240px;
+		}
+		#radio_logos 
+		{
+			float:left;
+			max-height:240px;
+			max-width:240px;
+			overflow:hidden;
 		}
 		h1
 		{
@@ -107,6 +124,8 @@ height:12px;
 		bottom:0;
 		display:block;
 	}
+	.red{color:#808080}
+	.green{color:#4CFF00}
 	ul li span.content b
 	{
 		color:#212121;
@@ -141,17 +160,319 @@ height:12px;
 		margin:2px;
 		background-color:purple;
 	}
-	#roku_remote br, #fire_remote br
+	#fs_remote br, #roku_remote br, #fire_remote br
 	{
 		clear:both;
 	}	
-	#roku_remote .roku_app_button, #fire_remote .fire_app_button
+	#fs_remote .fs_app_button, #roku_remote .roku_app_button, #fire_remote .fire_app_button
 	{
 		cursor:pointer;
 		max-width:900px;
 		height:60px;
 		margin:2px;
 		max-height:600px;
+	}
+
+	#fs_remote_text
+	{
+		position:absolute;
+		top:25px;
+		left:0;
+		height:240px;
+		right:320px;
+		overflow:hidden;
+	}
+	#fs_remote_modes
+	{
+		position:absolute;
+		top:0px;
+		left:0px;
+		right:0px;
+		width:100%;
+		height:25px;
+		background-color:black;
+		border-bottom:1px solid lime;
+	}
+	#fs_remote_modes div
+	{
+		float:left;
+		max-width:20%;
+		background-color:black;
+		color:lime;
+		text-align:center;
+		padding:3px;
+		cursor:pointer;
+	}
+	#fs_remote_modes div.fs_active
+	{
+		color:#FF6A00;
+		text-weight:bolder;
+	}
+	#fs_remote_modes div:hover
+	{
+		color:#FF6A00;
+	}
+
+	#fs_presets
+	{
+		position:absolute;
+		top:270px;
+		left:0px;
+		right:0px;
+		width:100%;
+		bottom:25px;
+		overflow:auto;
+		background-color:black;
+		border-top:1px solid white;
+	}
+	#fs_buttons
+	{
+		position:absolute;
+		height:25px;
+		right:0px;
+		width:100%;
+		bottom:0px;
+		overflow:auto;
+		background-color:black;
+	}
+	
+	#fs_buttons div
+	{
+		float:left;
+		width:15%;
+		background-color:black;
+		color:lime;
+		font-size:7pt;
+		height:40px;
+		overflow:hidden;
+		border:1px solid lime;
+		margin:1px;
+		text-align:center;
+		padding:3px;
+	}
+	
+	#fs_presets div
+	{
+		float:left;
+		width:15%;
+		background-color:black;
+		color:lime;
+		font-size:7pt;
+		height:40px;
+		overflow:hidden;
+		border:1px solid lime;
+		margin:1px;
+		text-align:center;
+		padding:3px;
+	}
+	#fs_presets div .presetname
+	{
+		font-size:12pt;
+	}
+	/*
+		<div id="fs_presets">
+		</div>
+	*/	
+		
+	
+	#fsapi_waveband
+	{
+		background-color:black;
+		width:100%;
+		color:#FF6A00;
+		border-bottom:1px solid white;
+		font-size:12pt;
+		height:40px;
+		overflow:hidden;
+		padding:0;
+	}
+	
+	#fsapi_frequency
+	{
+		background-color:black;
+		color:#FF6A00;
+		font-size:16pt;
+		float:right;
+		padding:0;
+		line-height:22pt;
+	}
+	#fsapi_name
+	{
+		background-color:black;
+		color:#FFFFFF;
+		font-size:18pt;
+		float:left;
+		padding:0;
+		line-height:22pt;
+		white-space: nowrap;
+		animation: marquee 50s linear infinite;
+		overflow: hidden;
+		text-overflow:ellipsis;
+		padding:2px;
+	}
+	#fsapi_album
+	{
+		background-color:black;
+		width:100%;
+		color:#FFFFFF;
+		font-size:14pt;
+		text-align:left;
+		clear:both;
+		overflow:hidden;
+		max-height:70px;
+	}
+	#fsapi_artist_box
+	{
+		background-color:black;
+		width:100%;
+		color:#FFFFFF;
+		font-size:14pt;
+		text-align:left;
+		overflow:hidden;
+		height:100px;
+		position:relative;
+	}
+	#fsapi_album
+	{
+		background-color:black;
+		width:100%;
+		color:#FFFFFF;
+		font-size:14pt;
+		text-align:left;
+		clear:both;
+		overflow:hidden;
+		max-height:70px;
+	}
+	#fsapi_album_box
+	{
+		background-color:black;
+		width:100%;
+		color:#FFFFFF;
+		font-size:14pt;
+		text-align:left;
+		overflow:hidden;
+		height:100px;
+		position:relative;
+	}
+	#fsapi_artist_graphic
+	{
+		position:absolute;
+		top:0;
+		left:0;
+		width:64px;
+		height:64px;
+	}
+	#fsapi_artist_graphic img
+	{
+		border-radius: 50%;
+	}
+	#fsapi_artist a, #fsapi_album a
+	{
+		text-decoration:none;
+		color:white;
+	}
+	#fsapi_album_summary small
+	{
+		font-size:8pt;
+	}
+	#fsapi_artist
+	{
+		position:absolute;
+		top:0;
+		left:64px;
+		right:0;
+		height:20px;
+		font-size:14pt;
+		line-height:18px;
+		padding-left:2px;
+		overflow:hidden;
+	}
+	#fsapi_artist_summary
+	{
+		position:absolute;
+		padding:2px;
+		top:20px;
+		left:64px;
+		right:0;
+		height:74px;
+		font-size:8pt;
+		-webkit-marquee: up medium infinite scroll normal;
+		overflow-y: -webkit-marquee;
+	}
+	#fsapi_album
+	{
+		position:absolute;
+		top:0;
+		left:0px;
+		right:0;
+		height:20px;
+		font-size:14pt;
+		line-height:18px;
+		padding-left:2px;
+		overflow:hidden;
+	}
+	#fsapi_album_summary
+	{
+		position:absolute;
+		padding:2px;
+		top:20px;
+		left:0px;
+		right:0;
+		height:74px;
+		font-size:10pt;
+	}
+	#fs_graphicUri
+	{
+		position:absolute;
+		margin:auto;
+		top:0;
+		bottom:0;
+		left:0;
+		right:0;
+	}
+	#fsapi_text
+	{
+		/* DAB : DLS, FM : RT, Internet Radio : Now Playing */
+		background-color:black;
+		width:100%;
+		color:#FF6A00;
+		padding:3px;
+		font-size:16pt;
+	}
+	#fsapi_rdns
+	{
+		background-color:black;
+		width:100%;
+		color:#eeeeee;
+		padding:3px;
+		font-size:16pt;
+	}
+	#fsapi_rdns_status
+	{
+		background-color:black;
+		width:100%;
+		color:blue;
+		font-size:10pt;
+		bottom:0;
+		text-align:left;
+		position:absolute;
+	}
+
+	#fs_remote_logo
+	{
+		position:absolute;
+		display:table-cell;
+		text-align:center;
+		vertical-align:middle;
+		top:25px;
+		right:0;
+		height:240px;
+		width:320px;
+		overflow:hidden;
+	}
+	#fs_remote_logo img
+	{
+		height:240px;
 	}
 	
 	.roku_button_pad, .roku2, .roku3, .fire_button_pad, .fire2, .fire3
@@ -181,7 +502,7 @@ height:12px;
 		padding:0;
 	}
 	
-	#roku_remote, #netgem-remote, #fire_remote
+	#fs_remote, #roku_remote, #netgem-remote, #fire_remote
 	{
 		top:40px;
 		bottom:0;
@@ -189,7 +510,11 @@ height:12px;
 		right:0;
 		position:absolute;
 	}
-		
+
+	#fs_remote
+	{
+		background-color:black;
+	}
 	
 	.apps_sb
 	{
@@ -235,6 +560,30 @@ height:12px;
 		
 		
 		</div>
+	<div id="fs_remote">
+		<div id="fs_remote_text">
+			<span id="fsapi_mode"></span>
+			
+			<div id="fsapi_waveband"><div  id="fsapi_name"></div><span  id="fsapi_frequency"></span></div>
+			<div  id="fsapi_artist_box"><div id="fsapi_artist_graphic"></div><div id="fsapi_artist"></div><div id="fsapi_artist_summary"></div></div>
+			<div  id="fsapi_album_box"><div id="fsapi_album"></div><div id="fsapi_album_summary"></div></div>
+			<div  id="fsapi_text"></div>
+			
+			<div  id="fsapi_rdns"></div>
+			<div  id="fsapi_rdns_status"></div>
+			
+		</div>
+		<div id="fs_remote_logo">
+			<span id='fs_rdns_logo' data-imagesrc=''></span>
+			<span id='fs_graphicUri' data-imagesrc=''></span>
+		</div>
+		<div id="fs_remote_modes">
+		
+		</div>
+		<div id="fs_presets">
+		</div>
+		<div id="fs_buttons"><div id="fs_vol_minus">Vol-</div><div id="fs_vol_plus">Vol+</div></div>
+	</div>
 	<div id="roku_remote">
 		<input type="hidden" id="roku_remote_endpoint"></input>
 		
@@ -310,3 +659,4 @@ height:12px;
 	</div>
 	</body>
 </html>
+<!-- Volume, Prev, Next, DAB Station List -->
